@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <title>Travels Dashboard</title>
+    <link rel="stylesheet" href="{% static 'main_app/css/materialize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main_app/css/materialize_icons.css' %}">
+    <script src="{% static 'main_app/js/jquery-2.2.3.js' %}"></script>
+    <script src="{% static 'main_app/js/jquery-ui.js' %}"></script>
+    <script src="{% static 'main_app/js/materialize.js' %}"></script>
+  </head>
+  <body>
+    <nav class="orange">
+      <ul class="right">
+        <li><a href="{% url 'main_app:logout' %}">Logout</a></li>
+      </ul>
+    </nav>
+    <main class="container">
+      <h3>Hello {{request.session.user.name}}</h3>
+    </main>
+
+    <h5>Your trip schedules</h5>
+    <main class="container section">
+      {% if messages %}
+      <div class="row">
+      {% for message in messages %}
+      <p class="red white-text col s6 offset-s3">{{message}}</p>
+      {% endfor %}
+      {% endif %}
+      <section class="row">
+          <table>
+            <thead>
+              <tr>
+                <th>Destination</th>
+                <th>Travel Start Date</th>
+                <th>Travel End date</th>
+                <th>Plan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if yourtrips %}
+              {% for yourtrips in yourtrips %}
+              <tr>
+                <td><a href="/destination/{{yourtrips.id}}">{{yourtrips.destination}}</a></td>
+                <td>{{yourtrips.startdate}}</td>
+                <td>{{yourtrips.enddate}}</td>
+                <td>{{yourtrips.description}}</td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+          <h5>Other Users travel plan</h5>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Destination</th>
+                <th>Travel Start Date</th>
+                <th>Travel End date</th>
+                <th>Join</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if otherstrips %}
+              {% for otherstrips in otherstrips %}
+              <tr>
+                <td>{{otherstrips.UserName}}</td>
+                <td><a href="/destination/{{otherstrips.id}}">{{otherstrips.destination}}</a></td>
+                <td>{{otherstrips.startdate}}</td>
+                <td>{{otherstrips.enddate}}</td>
+                <td><a href="">Join</a></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+          <h4><p align="right"><a href="travels/add">Add Travel Plan</a></p></h4>
+      </section>
+    </main>
+  </body>
+</html>
